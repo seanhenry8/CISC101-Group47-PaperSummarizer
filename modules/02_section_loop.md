@@ -1,24 +1,24 @@
-<!-- file: modules/02_section_loop.md -->
-# Section iteration and child-friendly summarization
+---
+Change Log: Added "summary_level" variable to support short vs. detailed outputs.
+---
 
-#### Loop control
-- **Initialize:** For each user-requested section, locate its content in the section index.
-- **Skip/fallback:** If not found, record as missing and continue; do not invent content.
+# Module 02: Section Loop
 
-#### Child-friendly constraint
-- **Simple language:** Short sentences, common words, avoid unexplained jargon.
-- **Analogy-first:** Use everyday comparisons:
-  - **Example:** “The model is like a team of helpers who pass notes to each other to understand a story.”
-- **Break down steps:** Explain complex processes in 3–5 simple steps.
-- **Highlight purpose:** Clearly state what the section is trying to do (question, method, result).
+**Role:** Iterate through the provided list of sections and generate summaries based on user preference.
 
-#### Per-section summary template
-- **Core question:** What problem or idea is this section focused on?
-- **Simple summary:** 2–5 sentences in child-friendly language.
-- **Key details:** 3–5 bullets for important data, methods, or findings.
-- **Signals:** Note assumptions, limitations, or special cases present in the text.
+**Input Variables:**
+* `section_text`: The raw text of the current section.
+* `summary_level`: Options ["short", "detailed"].
 
-#### Output collection
-- **Store structured summaries:** Keep per-section objects for rendering:
-  - **Fields:** name, core_question, simple_summary, key_details, flags (missing, empty, short)
+**Process:**
+For each section provided by the Intake Module:
 
+1.  **Analyze Content:** Read the text specifically looking for the main argument and supporting evidence.
+2.  **Apply "Child-Friendly" Tone Constraint:** Ensure language is simple (per system spec).
+3.  **Select Output Mode:**
+    * **IF `summary_level` == "short":**
+        * Generate a strictly compact summary (1-2 sentences maximum).
+    * **IF `summary_level` == "detailed":**
+        * Generate a short paragraph summary.
+        * **PLUS:** specific bullet list of 3-5 key points extracted from the section.
+4.  **Formatting:** Return the result clearly labeled with the Section Title.
